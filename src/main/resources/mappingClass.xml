@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<class entity-name="Employee" table="Employee">
+
+		<id name="emp_id" type="long" column="EMP_ID">
+			<generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+				<param name="sequence_name">HIBERNATE_SEQUENCE_EMP</param>
+				<param name="optimizer">none</param>
+				<param name="increment_size">1</param>
+			</generator>
+		</id>
+
+		<property name="name" column="NAME" type="string" />
+
+		<property name="address" column="ADDRESS" type="string" />
+
+		<many-to-one name="department" column="DEPARTMENT"
+			cascade="all" fetch="join" class="Department" />
+
+		<!-- <bag name="department" -->
+		<!-- table="Department" -->
+		<!-- inverse="true" -->
+		<!-- lazy="false" -->
+		<!-- cascade="all"> -->
+		<!-- <key column="CUSTOMER_ID"/> -->
+		<!-- <one-to-many class="Department"/> -->
+		<!-- </bag> -->
+
+	</class>
+
+
+	<class entity-name="Department" table="Department">
+
+		<id name="dept_id" type="long" column="DEPT_ID">
+			<generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+				<param name="sequence_name">HIBERNATE_SEQUENCE_DEPT</param>
+				<param name="optimizer">none</param>
+				<param name="increment_size">1</param>
+			</generator>
+		</id>
+
+		<property name="name" column="NAME" type="string" />
+
+		<!-- <set name="cities" -->
+		<!-- table="City" -->
+		<!-- inverse="true" -->
+		<!-- lazy="false" -->
+		<!-- cascade="all"> -->
+		<!-- <key column="DEPT_ID"/> -->
+		<!-- <key> -->
+		<!-- <column name="DEPT_ID" not-null="true" /> -->
+		<!-- </key> -->
+		<!-- <one-to-many class="City"/> -->
+		<!-- </set> -->
+
+	<set name="cities" table="City" inverse="false" lazy="false" fetch="join"
+		cascade="all">
+		<key>
+			<column name="DEPT_ID" not-null="false" />
+		</key>
+		<one-to-many class="City" />
+	</set>
+	</class>
+
+
+	<class entity-name="City" table="City">
+
+		<id name="city_id" type="long" column="CITY_ID">
+			<generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+				<param name="sequence_name">HIBERNATE_SEQUENCE_CITY</param>
+				<param name="optimizer">none</param>
+				<param name="increment_size">1</param>
+			</generator>
+		</id>
+
+		<property name="name" column="NAME" type="string" />
+	</class>
+</hibernate-mapping>
